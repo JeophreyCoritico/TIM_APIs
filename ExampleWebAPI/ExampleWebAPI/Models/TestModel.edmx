@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DADModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="DATEASSIGNED" />
+          </Key>
+          <Property Name="LOCCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="STAFFID" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATEASSIGNED" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="STAFFID" />
+          </Key>
+          <Property Name="STAFFID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="GIVENNAME" Type="nvarchar" MaxLength="15" />
+          <Property Name="SURNAME" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Office">
+          <Key>
+            <PropertyRef Name="LOCCODE" />
+          </Key>
+          <Property Name="LOCCODE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ADDRESS" Type="nvarchar" MaxLength="30" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__ASSIGNMEN__LOCCO__245FC9E3">
+          <End Role="Office" Type="Self.Office" Multiplicity="0..1" />
+          <End Role="ASSIGNMENT" Type="Self.ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Office">
+              <PropertyRef Name="LOCCODE" />
+            </Principal>
+            <Dependent Role="ASSIGNMENT">
+              <PropertyRef Name="LOCCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ASSIGNMEN__STAFF__2553EE1C">
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="0..1" />
+          <End Role="ASSIGNMENT" Type="Self.ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLOYEE">
+              <PropertyRef Name="STAFFID" />
+            </Principal>
+            <Dependent Role="ASSIGNMENT">
+              <PropertyRef Name="STAFFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DADModelStoreContainer">
+          <EntitySet Name="ASSIGNMENT" EntityType="Self.ASSIGNMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLOYEE" EntityType="Self.EMPLOYEE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Office" EntityType="Self.Office" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ASSIGNMEN__LOCCO__245FC9E3" Association="Self.FK__ASSIGNMEN__LOCCO__245FC9E3">
+            <End Role="Office" EntitySet="Office" />
+            <End Role="ASSIGNMENT" EntitySet="ASSIGNMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ASSIGNMEN__STAFF__2553EE1C" Association="Self.FK__ASSIGNMEN__STAFF__2553EE1C">
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEE" />
+            <End Role="ASSIGNMENT" EntitySet="ASSIGNMENT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DADModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ASSIGNMENT">
+          <Key>
+            <PropertyRef Name="DATEASSIGNED" />
+          </Key>
+          <Property Name="LOCCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="STAFFID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATEASSIGNED" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Office" Relationship="Self.FK__ASSIGNMEN__LOCCO__245FC9E3" FromRole="ASSIGNMENT" ToRole="Office" />
+          <NavigationProperty Name="EMPLOYEE" Relationship="Self.FK__ASSIGNMEN__STAFF__2553EE1C" FromRole="ASSIGNMENT" ToRole="EMPLOYEE" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="STAFFID" />
+          </Key>
+          <Property Name="STAFFID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GIVENNAME" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SURNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ASSIGNMENTs" Relationship="Self.FK__ASSIGNMEN__STAFF__2553EE1C" FromRole="EMPLOYEE" ToRole="ASSIGNMENT" />
+        </EntityType>
+        <EntityType Name="Office">
+          <Key>
+            <PropertyRef Name="LOCCODE" />
+          </Key>
+          <Property Name="LOCCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ASSIGNMENTs" Relationship="Self.FK__ASSIGNMEN__LOCCO__245FC9E3" FromRole="Office" ToRole="ASSIGNMENT" />
+        </EntityType>
+        <Association Name="FK__ASSIGNMEN__LOCCO__245FC9E3">
+          <End Role="Office" Type="Self.Office" Multiplicity="0..1" />
+          <End Role="ASSIGNMENT" Type="Self.ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Office">
+              <PropertyRef Name="LOCCODE" />
+            </Principal>
+            <Dependent Role="ASSIGNMENT">
+              <PropertyRef Name="LOCCODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ASSIGNMEN__STAFF__2553EE1C">
+          <End Role="EMPLOYEE" Type="Self.EMPLOYEE" Multiplicity="0..1" />
+          <End Role="ASSIGNMENT" Type="Self.ASSIGNMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EMPLOYEE">
+              <PropertyRef Name="STAFFID" />
+            </Principal>
+            <Dependent Role="ASSIGNMENT">
+              <PropertyRef Name="STAFFID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DADEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ASSIGNMENTs" EntityType="Self.ASSIGNMENT" />
+          <EntitySet Name="EMPLOYEEs" EntityType="Self.EMPLOYEE" />
+          <EntitySet Name="Offices" EntityType="Self.Office" />
+          <AssociationSet Name="FK__ASSIGNMEN__LOCCO__245FC9E3" Association="Self.FK__ASSIGNMEN__LOCCO__245FC9E3">
+            <End Role="Office" EntitySet="Offices" />
+            <End Role="ASSIGNMENT" EntitySet="ASSIGNMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ASSIGNMEN__STAFF__2553EE1C" Association="Self.FK__ASSIGNMEN__STAFF__2553EE1C">
+            <End Role="EMPLOYEE" EntitySet="EMPLOYEEs" />
+            <End Role="ASSIGNMENT" EntitySet="ASSIGNMENTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DADModelStoreContainer" CdmEntityContainer="DADEntities">
+          <EntitySetMapping Name="ASSIGNMENTs">
+            <EntityTypeMapping TypeName="DADModel.ASSIGNMENT">
+              <MappingFragment StoreEntitySet="ASSIGNMENT">
+                <ScalarProperty Name="LOCCODE" ColumnName="LOCCODE" />
+                <ScalarProperty Name="STAFFID" ColumnName="STAFFID" />
+                <ScalarProperty Name="DATEASSIGNED" ColumnName="DATEASSIGNED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEEs">
+            <EntityTypeMapping TypeName="DADModel.EMPLOYEE">
+              <MappingFragment StoreEntitySet="EMPLOYEE">
+                <ScalarProperty Name="STAFFID" ColumnName="STAFFID" />
+                <ScalarProperty Name="GIVENNAME" ColumnName="GIVENNAME" />
+                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Offices">
+            <EntityTypeMapping TypeName="DADModel.Office">
+              <MappingFragment StoreEntitySet="Office">
+                <ScalarProperty Name="LOCCODE" ColumnName="LOCCODE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
