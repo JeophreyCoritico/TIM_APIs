@@ -157,9 +157,9 @@ namespace ExampleWebAPI.Controllers
 
                 conn.Open();
 
-                query = "update employee Givenname = " + "'" employee.GivenName "', " +
-                    "Surname = " + "'" employee.Surname "'"  +
-                    "where StaffID = " + id;
+                query = "update employee set Givenname = '" +  employee.GivenName + 
+                    "', Surname = '" +  employee.Surname + 
+                    "' where StaffID = " + id;
 
 
                 cmd = new SqlCommand(query, conn);
@@ -184,8 +184,41 @@ namespace ExampleWebAPI.Controllers
         }
 
         // DELETE: api/Employee/5
-        public void Delete(int id)
+        public string Delete(int id)
         {
+
+            SqlConnection conn = DBConnection.GetConnection();
+
+            SqlCommand cmd;
+            string query;
+            string output = "No employee found";
+
+            try
+            {
+
+                conn.Open();
+
+                query = "Delete From employee where staffID = " + id;
+
+                cmd = new SqlCommand(query, conn);
+
+                //read the data for that command
+                output = cmd.ExecuteNonQuery().ToString() + " Row Deleted";
+
+            }
+            catch (Exception e)
+            {
+                output = e.Message;
+            }
+
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                    conn.Close();
+            }
+            conn.Close();
+
+            return output;
         }
     }
 }
